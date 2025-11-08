@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 class Card:
     def __init__(self, suit_int, rank_int):
@@ -48,9 +49,18 @@ def GeneratePack():
             pack[13*i + j] = Card(i, j)
     return pack
 
+def Shuffle(deck):
+    for i in range(len(deck)):
+        n = random.randint(i,len(deck)-1)
+        temp = deck[i]
+        deck[i] = deck[n]
+        deck[n] = temp
+    return deck
+
 def GameSetup():
     pack = GeneratePack()
     print("Shuffling deck...")
+    pack = Shuffle(pack)
 
 
 MainMenu()
