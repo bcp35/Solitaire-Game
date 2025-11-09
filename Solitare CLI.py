@@ -41,7 +41,26 @@ def MainMenu():
 
 def Instructions():
     print("How to play Solitare:")
- 
+    print("At each turn, the current state will look like this: ")
+    x=10
+    print(f"Deck: [{x}]. Next Cards: [H3,DJ,S10]")
+    print(f"Stacks: [H2] [D3] [] [SA]")
+    print(f"Lanes: [HJ] [*,D4] [*,*,D5] [*,*,*,SK] [*,*,*,*,C9] [*,*,*,*,*,CA] [*,*,*,*,*,*,H6]")
+
+    print("\nThe deck shows the cards that you have left to use, displaying them 3 at a time, only able to use the right-most of the three, and gaining access to the other cards after using them.")
+    print("The aim of the game is to add cards of the same suit from Ace to King in each stack in the correct order.")
+    print("Each lane contains a stack of cards from high to low of alternating colours. Cards can move between lanes, but only if it is one rank below the card above it. Moving a card to another lane reveals the card that was above it. Only Kings can move to empty lanes.")
+
+    print("\n For each go you have the option to access the next card in the deck, or the bottom card from each lane, and move it to the corresponding stack for that rank or another lane, if that is a legal move.")
+
+    print(" 1. Start Game")
+    print(" 2. Main Menu")
+    x = int(input("Enter a number: "))
+    if x == 1:
+        GameSetup()
+    elif x == 2:
+        MainMenu()
+
 def GeneratePack():
     pack = np.empty(52, dtype = object)
     for i in range(4):
