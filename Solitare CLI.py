@@ -19,6 +19,79 @@ class Card:
     def getFullName(self):
         return self.rank_fullname + " of " + self.suit
 
+class Stack:
+    def __init__(self, suit_int):
+        self.suit_int = suit_int
+        self.suit = suits[suit_int]
+        self.top_rank = 0
+    def isEmpty(self):
+        return self.top_rank == 0
+    def isFull(self):
+        return self.top_rank == 13
+    def push(self, card): #puts this card on the top of the stack (if legal)
+        if not self.isFull():
+            if card.getSuit() == self.suit:
+                if card.getRank() == self.top_rank + 1:
+                    self.top_rank += 1
+                    return True
+        return False
+    def pop(self): #removes and returns the card at the top of the stack (if there is one)
+        if self.isEmpty():
+            return None
+        self.top_rank -= 1
+        return Card(self.suit_int, self.top_rank - 1)
+    def getDisplay(self):
+        if top_rank == 0:
+            return "[]"
+        return self.suit[0] + self.top_rank
+
+class Lane:
+    def __init__(self, cards):
+        self.hidden_cards = cards[:-1]
+        self.top_card = cards[-1]
+        self.shown_cards = [self.top_card]
+    def isEmpty(self):
+        return len(self.shown_cards) == 0
+    def push(self, card): #puts this card on the lane (if legal)
+        if card.getColour() != self.top_card.getColour():
+            if card.getRank() == self.top_card.getRank() - 1:
+                self.shown_cards.append(card)
+                self.top_card = card
+                return True
+        return False
+    def pop(self): #gets the top card in the lane
+        if self.isEmpty():
+            return None
+        card = self.shown_cards.pop()
+        if len(self.shown_cards) == 0: #there was only one card shown - so one needs to be moved from hidden
+            self.top_card = self.hidden_cards.pop()
+            self.shown_cards = [self.top_card]
+        else:
+            self.top_card = self.shown_cards[-1]
+        return card
+    def getDisplay(self):
+        display = "["
+        for c in self.hidden_cards:
+            display += "*,"
+        for c in self.shown_cards:
+            display += c.getDisplayName() + ","
+        return display[:-1] + "]" #gets rid of last character (comma) and adds closing square bracket
+        
+
+class Deck:
+    def __init__(self, pile):
+        self.stock_pile = pile #the first element indicates the top of the pile
+        self.waste_pile = [] #last element indicates the retrievable card
+    def getNextThree(self): #gives the top 3 cards in the waste pile
+        return self.waste_pile[-3:]
+    def next(self): #moves (at most) 3 cards from stock pile to waste pile
+        self.waste_pile.extend(self.stock_pile[:3])
+    def reset(self): #moves all cards from the waste pile back to the stock pile
+        self.stock_pile = self.waste_pile + self.stock_pile
+    def pop(self): #returns and removes the top card from the waste pile
+        card = self.waste_pile.pop()
+        return card
+        
 
 suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
 ranks = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"]
@@ -43,9 +116,9 @@ def Instructions():
     print("How to play Solitare:")
     print("At each turn, the current state will look like this: ")
     x=10
-    print(f"Deck: [{x}]. Next Cards: [H3,DJ,S10]")
+    print(f"Deck: ({x}) [H3,DJ,S10]")
     print(f"Stacks: [H2] [D3] [] [SA]")
-    print(f"Lanes: [HJ] [*,D4] [*,*,D5] [*,*,*,SK] [*,*,*,*,C9] [*,*,*,*,*,CA] [*,*,*,*,*,*,H6]")
+    print(f"Lanes: [HJ,C10] [DK] [*,*,D5] [*,*,*,SK] [*,*,*,*,C9] [*,*,*,D4,S3,D2,CA] [*,*,*,*,S7,H6]")
 
     print("\nThe deck shows the cards that you have left to use, displaying them 3 at a time, only able to use the right-most of the three, and gaining access to the other cards after using them.")
     print("The aim of the game is to add cards of the same suit from Ace to King in each stack in the correct order.")
@@ -69,17 +142,18 @@ def GeneratePack():
     return pack
 
 def Shuffle(deck):
-    for i in range(len(deck)):
-        n = random.randint(i,len(deck)-1)
-        temp = deck[i]
-        deck[i] = deck[n]
-        deck[n] = temp
+    for j in range(3): #shuffling 3 times
+        for i in range(len(deck)):
+            n = random.randint(i,len(deck)-1)
+            temp = deck[i]
+            deck[i] = deck[n]
+            deck[n] = temp
     return deck
 
 def GameSetup():
     pack = GeneratePack()
     print("Shuffling deck...")
     pack = Shuffle(pack)
-
+    deck = Deck(pack.tolist()) #deck needs to be a list not array so that length can change
 
 MainMenu()
