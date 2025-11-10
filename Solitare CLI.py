@@ -41,7 +41,7 @@ class Stack:
         self.top_rank -= 1
         return Card(self.suit_int, self.top_rank - 1)
     def getDisplay(self):
-        if top_rank == 0:
+        if self.top_rank == 0:
             return "[]"
         return self.suit[0] + self.top_rank
 
@@ -91,7 +91,29 @@ class Deck:
     def pop(self): #returns and removes the top card from the waste pile
         card = self.waste_pile.pop()
         return card
+    def getDisplay(self):
+        return f"({len(self.stock_pile)}) {self.getNextThree()}"
         
+class GameState:
+    def __init__(self, pack):
+        self.lanes = np.empty(7, dtype = object)
+        self.distributeLanes(pack[0:28])
+        self.deck = Deck(pack[28:])
+        self.stacks = [Stack(i) for i in range(4)]
+    def distributeLanes(self,cards):
+        start = 0
+        for i in range(1,8):
+            self.lanes[i-1] = Lane(cards[start:start+i])
+            start += i
+    def getDisplay(self):
+        display = "Deck: " + self.deck.getDisplay() + " - Stacks: "
+        for stack in self.stacks:
+            display += stack.getDisplay() + " "
+        display += "\nLanes: "
+        for lane in self.lanes:
+            display += lane.getDisplay() + " "
+        return display
+
 
 suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
 ranks = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"]
@@ -152,8 +174,9 @@ def Shuffle(deck):
 
 def GameSetup():
     pack = GeneratePack()
-    print("Shuffling deck...")
+    print("Shuffling pack...")
     pack = Shuffle(pack)
-    deck = Deck(pack.tolist()) #deck needs to be a list not array so that length can change
+    print("Dealing cards...")
+    game_state = GameState(pack.tolist()) #pack needs to be a list not array so that length can change
 
 MainMenu()
