@@ -110,11 +110,20 @@ class GameState:
         for stack in self.stacks:
             display += stack.getDisplay() + " "
         display += "\nLanes: "
+        i = 0
         for lane in self.lanes:
-            display += lane.getDisplay() + " "
+            i += 1
+            display += f"{i}" + lane.getDisplay() + ", "
         return display
+    def getDeck(self):
+        return self.deck
+    def getLane(self,i):
+        return self.lanes[i]
+    def getStack(self,i):
+        return self.stacks[i]
+    
 
-
+#Main
 suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
 ranks = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"]
 ranks_fullname = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"]
@@ -122,11 +131,7 @@ colours = ["Red", "Black"]
 
 def MainMenu():
     print("Welcome to Solitare!")
-    print("Enter the number of the option you'd like to select:")
-    print(" 1. Start Game")
-    print(" 2. Instructions")
-    print(" 3. Exit")
-    x = int(input("Enter a number: "))
+    x = CheckOptions("Enter the number of the option you'd like to select:",["Start Game", "Instructions", "Exit"])
     if x == 1:
         GameSetup()
     elif x == 2:
@@ -148,9 +153,7 @@ def Instructions():
 
     print("\n For each go you have the option to access the next card in the deck, or the bottom card from each lane, and move it to the corresponding stack for that rank or another lane, if that is a legal move.")
 
-    print(" 1. Start Game")
-    print(" 2. Main Menu")
-    x = int(input("Enter a number: "))
+    x = CheckOptions("Select an option:",["Start Game", "Main Menu"])
     if x == 1:
         GameSetup()
     elif x == 2:
@@ -172,11 +175,49 @@ def Shuffle(deck):
             deck[n] = temp
     return deck
 
+def CheckOptions(text, options):
+    valid = False
+    while not valid:
+        print(text)
+        for i in range(len(options)):
+            print(f"{i+1}: {options[i]}")
+        inp = input(">>")
+        if not inp.isdigit():
+            print("Please enter a valid integer.")
+        elif int(inp) < 1 or int(inp) > len(options):
+            print("Please enter a number in the specified range")
+        else:
+            valid = True
+            return int(inp)
+
+def SelectOption(game_state):
+        x = int(inp)
+        x = CheckOptions("Select an option:", ["Deck","Stacks","Lanes","Give Up"])
+        if x == 1:
+            AccessDeck(game_state)
+        if x == 2:
+            AccessStacks(game_state)
+        if x == 3:
+            AccessLanes(game_state)
+        else:
+            CheckGiveUp(game_state)
+
+def CheckGiveUp(game_state):
+    x = CheckOptions("Are you sure you want to give up?", ["Yes", "No"])
+    if x == 1:
+        MainMenu()
+    else:
+        SelectOption(game_state)
+
+def PutDownCard(game_state, card):
+    return game_state
+
 def GameSetup():
     pack = GeneratePack()
     print("Shuffling pack...")
     pack = Shuffle(pack)
     print("Dealing cards...")
     game_state = GameState(pack.tolist()) #pack needs to be a list not array so that length can change
+    print(game_state.getDisplay())
 
 MainMenu()
