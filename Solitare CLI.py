@@ -4,12 +4,15 @@ import random
 class Card:
     def __init__(self, suit_int, rank_int):
         self.suit = suits[suit_int]
+        self.suit_int = suit_int
         self.rank_int = rank_int + 1
         self.rank_string = ranks[rank_int]
         self.rank_fullname = ranks_fullname[rank_int]
         self.colour = colours[suit_int // 2]
     def getSuit(self):
         return self.suit
+    def getSuitInt(self):
+        return self.suit_int
     def getRank(self):
         return self.rank_int
     def getColour(self):
@@ -35,21 +38,28 @@ class Stack:
                     self.top_rank += 1
                     return True
         return False
+    def peek(self): #returns top card without removing
+        if self.isEmpty():
+            return None
+        return Card(self.suit_int, self.top_rank - 1)
     def pop(self): #removes and returns the card at the top of the stack (if there is one)
         if self.isEmpty():
             return None
         self.top_rank -= 1
         return Card(self.suit_int, self.top_rank - 1)
+    def getSuitInt(self):
+        return self.suit_int
     def getDisplay(self):
         if self.top_rank == 0:
             return "[]"
-        return self.suit[0] + self.top_rank
+        return self.suit[0] + ranks[self.top_rank-1]
 
 class Lane:
-    def __init__(self, cards):
+    def __init__(self, cards,i):
         self.hidden_cards = cards[:-1]
         self.top_card = cards[-1]
         self.shown_cards = [self.top_card]
+        self.num = i
     def isEmpty(self):
         return len(self.shown_cards) == 0
     def push(self, card): #puts this card on the lane (if legal)
@@ -59,7 +69,11 @@ class Lane:
                 self.top_card = card
                 return True
         return False
-    def pop(self): #gets the top card in the lane
+    def peek(self): #returns top card without removing
+        if self.isEmpty():
+            return None
+        return self.top_card
+    def pop(self): #returns and removes the top card in the lane
         if self.isEmpty():
             return None
         card = self.shown_cards.pop()
@@ -69,6 +83,8 @@ class Lane:
         else:
             self.top_card = self.shown_cards[-1]
         return card
+    def getNum(self):
+        return self.num
     def getDisplay(self):
         display = "["
         for c in self.hidden_cards:
@@ -85,14 +101,23 @@ class Deck:
     def getNextThree(self): #gives the top 3 cards in the waste pile
         return self.waste_pile[-3:]
     def next(self): #moves (at most) 3 cards from stock pile to waste pile
-        self.waste_pile.extend(self.stock_pile[:3])
+        for i in range(3):
+            self.waste_pile.append(self.stock_pile.pop())
     def reset(self): #moves all cards from the waste pile back to the stock pile
         self.stock_pile = self.waste_pile + self.stock_pile
+        self.waste_pile = []
+    def peek(self): #returns top card without removing
+        if(len(self.waste_pile) == 0):
+            return None
+        card = self.waste_pile[-1]
+        return card
     def pop(self): #returns and removes the top card from the waste pile
+        if(len(self.waste_pile) == 0):
+            return None
         card = self.waste_pile.pop()
         return card
     def getDisplay(self):
-        return f"({len(self.stock_pile)}) {self.getNextThree()}"
+        return f"({len(self.stock_pile)}) {[c.getDisplayName() for c in self.getNextThree()]}"
         
 class GameState:
     def __init__(self, pack):
@@ -100,10 +125,17 @@ class GameState:
         self.distributeLanes(pack[0:28])
         self.deck = Deck(pack[28:])
         self.stacks = [Stack(i) for i in range(4)]
+        self.card_in_hand = (None, 0) #int represents where the card came from so it can be returned: 1 means deck, 2-5 means stacks, 6-12 means lanes 
+    def pickUpCard(self,card, last_loc): #sets the card in hand variable
+        self.card_in_hand = (card, last_loc)
+    def putDownCard(self):
+        self.card_in_hand = (None, 0)
+    def getCardInHand(self):
+        return self.card_in_hand
     def distributeLanes(self,cards):
         start = 0
         for i in range(1,8):
-            self.lanes[i-1] = Lane(cards[start:start+i])
+            self.lanes[i-1] = Lane(cards[start:start+i],i)
             start += i
     def getDisplay(self):
         display = "Deck: " + self.deck.getDisplay() + " - Stacks: "
@@ -114,6 +146,8 @@ class GameState:
         for lane in self.lanes:
             i += 1
             display += f"{i}" + lane.getDisplay() + ", "
+        if self.card_in_hand[0] != None:
+            display += f"\nHeld Card: {self.card_in_hand[0].getDisplayName()}"
         return display
     def getDeck(self):
         return self.deck
@@ -121,6 +155,12 @@ class GameState:
         return self.lanes[i]
     def getStack(self,i):
         return self.stacks[i]
+    def updateDeck(self, deck):
+        self.deck = deck
+    def updateLane(self, lane):
+        self.lanes[lane.getNum()] = lane
+    def updateStack(self, stack):
+        self.stacks[stack.getSuitInt] = stack
     
 
 #Main
@@ -190,27 +230,34 @@ def CheckOptions(text, options):
             valid = True
             return int(inp)
 
-def SelectOption(game_state):
-        x = int(inp)
-        x = CheckOptions("Select an option:", ["Deck","Stacks","Lanes","Give Up"])
-        if x == 1:
-            AccessDeck(game_state)
-        if x == 2:
-            AccessStacks(game_state)
-        if x == 3:
-            AccessLanes(game_state)
-        else:
-            CheckGiveUp(game_state)
+def PickUpCard(game_state):
+    x = CheckOptions("Select an option:", ["Deck","Stacks","Lanes","Give Up"])
+    if x == 1:
+        return TakeFromDeck(game_state)
+    if x == 2:
+        return TakeFromStacks(game_state)
+    if x == 3:
+        return TakeFromLanes(game_state)
+    else:
+        return CheckGiveUp(game_state)
 
 def CheckGiveUp(game_state):
     x = CheckOptions("Are you sure you want to give up?", ["Yes", "No"])
     if x == 1:
         MainMenu()
     else:
-        SelectOption(game_state)
+        return PlayGame(game_state)
 
-def PutDownCard(game_state, card):
-    return game_state
+def PutDownCard(game_state):
+    x = CheckOptions("Select an option:", ["Return Card","Stacks","Lanes","Give Up"])
+    if x == 1:
+        return ReturnCard(game_state)
+    if x == 2:
+        return PutOnStacks(game_state)
+    if x == 3:
+        return PutOnLanes(game_state)
+    else:
+        return CheckGiveUp(game_state)
 
 def GameSetup():
     pack = GeneratePack()
@@ -218,6 +265,94 @@ def GameSetup():
     pack = Shuffle(pack)
     print("Dealing cards...")
     game_state = GameState(pack.tolist()) #pack needs to be a list not array so that length can change
+    game_state = PlayGame(game_state)
+
+def PlayGame(game_state):
     print(game_state.getDisplay())
+    if game_state.getCardInHand()[0] == None:
+        game_state = PickUpCard(game_state)
+    else:
+        game_state = PutDownCard(game_state)
+    PlayGame(game_state)
+
+def TakeFromDeck(game_state):
+    deck = game_state.getDeck()
+    x = CheckOptions("Select an option:", ["Take from waste pile", "Draw cards from stock pile", "Return all cards to stock pile", "Back"])
+    if x == 1: #new card in hand is card at top of waste pile
+        card = deck.peek()
+        if card == None:
+            print("Cannot pick up from an empty stock pile.")
+            return game_state
+        game_state.pickUpCard(card,1)
+    elif x == 2: #move three cards from the stock pile to the waste piie
+        deck.next() 
+        game_state.updateDeck(deck)
+    elif x == 3: #move all cards from the waste pile to the stock pile
+        deck.reset()
+        game_state.updateDeck(deck)
+    return game_state
+        
+def TakeFromStacks(game_state):
+    x = CheckOptions("Select an Option:", ["Take from Hearts stack","Take from Diamonds stack","Take from Clubs stack","Take from Spades stack", "Back"])
+    if x in range(1,5): #Option 1-4 correspond to a stack
+        stack = game_state.getStack(x-1)
+        card = stack.peek()
+        if card == None:
+            print("Cannot pick up from an empty stack.")
+            return game_state
+        game_state.pickUpCard(card,x+1) #new card is now being held
+        return game_state
+    return game_state
+
+def TakeFromLanes(game_state):
+    x = CheckOptions("Select an Option", ([f"Take from Lane {i}" for i in range(1,8)] + ["Back"]))
+    if x in range(1,8): #Option 1-7 correspond to a lane
+        lane = game_state.getLane(x-1)
+        card = lane.peek()
+        if card == None:
+            print("Cannot pick up from an empty lane.")
+            return game_state
+        game_state.pickUpCard(card,x+5)
+    return game_state
+
+def ReturnCard(game_state):
+    game_state.putDownCard()
+    return game_state
+
+def PutOnStacks(game_state):
+    x = CheckOptions("Select an Option:", ["Add to stack", "Back"])
+    if x == 1:
+        card = game_state.getCardInHand()[0]
+        stack = game_state.getStack(card.getSuitInt())
+        b = stack.push(card)
+        if b == True:
+            game_state = RemoveCardFromLastLoc(game_state)
+        else:
+            print("Cannot place card onto this stack")
+        return game_state
+    return game_state
+
+def PutOnLanes(game_state):
+    x = CheckOptions("Select an Option", ([f"Add to Lane {i}" for i in range(1,8)] + ["Back"]))
+    if x in range(1,8): #Option 1-7 correspond to a lane
+        lane = game_state.getLane(x-1)
+        b = lane.push(game_state.getCardInHand()[0])
+        if b == True:
+            game_state = RemoveCardFromLastLoc(game_state)
+        else:
+            print("Cannot place card onto this lane.")
+        return game_state
+    return game_state
+
+def RemoveCardFromLastLoc(game_state):
+    card, last_loc = game_state.getCardInHand()
+    if last_loc == 1:
+        game_state.getDeck().pop()
+    elif last_loc in range(2,6):
+        game_state.getStack(last_loc-2).pop()
+    elif last_loc in range(6,13):
+        game_state.getLane(last_loc-6).pop()
+    game_state.putDownCard()
+    return game_state
 
 MainMenu()
