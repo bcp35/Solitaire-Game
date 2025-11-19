@@ -1,5 +1,6 @@
 import numpy as np
 import random
+from datetime import datetime
 
 class Card:
     def __init__(self, suit_int, rank_int):
@@ -132,7 +133,8 @@ class Deck:
         return f"({len(self.stock_pile)}) {[c.getDisplayName() for c in self.getNextThree()]}"
         
 class GameState:
-    def __init__(self, pack):
+    def __init__(self, pack, start_time):
+        self.start_time = start_time
         self.lanes = np.empty(7, dtype = object)
         self.distributeLanes(pack[0:28])
         self.deck = Deck(pack[28:])
@@ -144,6 +146,13 @@ class GameState:
         self.card_in_hand = (None, 0)
     def getCardInHand(self):
         return self.card_in_hand
+    def getTimeTaken(self):
+        return datetime.now() - self.start_time
+    def gameWon(self):
+        for stack in self.stacks:
+            if not stack.isFull():
+                return False
+        return True
     def distributeLanes(self,cards):
         start = 0
         for i in range(1,8):
@@ -276,16 +285,25 @@ def GameSetup():
     print("Shuffling pack...")
     pack = Shuffle(pack)
     print("Dealing cards...")
-    game_state = GameState(pack.tolist()) #pack needs to be a list not array so that length can change
+    game_state = GameState(pack.tolist(), datetime.now()) #pack needs to be a list not array so that length can change
     game_state = PlayGame(game_state)
 
 def PlayGame(game_state):
-    print(game_state.getDisplay())
-    if game_state.getCardInHand()[0] == None:
-        game_state = PickUpCard(game_state)
+    if game_state.gameWon():
+        EndGame()
     else:
-        game_state = PutDownCard(game_state)
-    PlayGame(game_state)
+        print(game_state.getDisplay())
+        if game_state.getCardInHand()[0] == None:
+            game_state = PickUpCard(game_state)
+        else:
+            game_state = PutDownCard(game_state)
+        PlayGame(game_state)
+
+    def EndGame(game_state):
+        print("You won, congratulations!")
+        time = game_state.getTimeTaken()
+        print("Time taken: {time.hour} hours, {time.minute} minutes, and {time.second} seconds")
+        MainMenu()
 
 def TakeFromDeck(game_state):
     deck = game_state.getDeck()
