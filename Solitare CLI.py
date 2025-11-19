@@ -63,6 +63,12 @@ class Lane:
     def isEmpty(self):
         return len(self.shown_cards) == 0
     def push(self, card): #puts this card on the lane (if legal)
+        if self.top_card == None:
+            if card.getRank() == 13:
+                self.shown_cards.append(card)
+                self.top_card = card
+                return True
+            return False
         if card.getColour() != self.top_card.getColour():
             if card.getRank() == self.top_card.getRank() - 1:
                 self.shown_cards.append(card)
@@ -78,8 +84,11 @@ class Lane:
             return None
         card = self.shown_cards.pop()
         if len(self.shown_cards) == 0: #there was only one card shown - so one needs to be moved from hidden
-            self.top_card = self.hidden_cards.pop()
-            self.shown_cards = [self.top_card]
+            if len(self.hidden_cards) == 0:
+                self.top_card = None
+            else:
+                self.top_card = self.hidden_cards.pop()
+                self.shown_cards = [self.top_card]
         else:
             self.top_card = self.shown_cards[-1]
         return card
@@ -101,7 +110,10 @@ class Deck:
     def getNextThree(self): #gives the top 3 cards in the waste pile
         return self.waste_pile[-3:]
     def next(self): #moves (at most) 3 cards from stock pile to waste pile
-        for i in range(3):
+        to_get = len(self.stock_pile)
+        if to_get > 3:
+            to_get = 3
+        for i in range(to_get):
             self.waste_pile.append(self.stock_pile.pop())
     def reset(self): #moves all cards from the waste pile back to the stock pile
         self.stock_pile = self.waste_pile + self.stock_pile
@@ -281,7 +293,7 @@ def TakeFromDeck(game_state):
     if x == 1: #new card in hand is card at top of waste pile
         card = deck.peek()
         if card == None:
-            print("Cannot pick up from an empty stock pile.")
+            print("Cannot pick up from an empty waste pile.")
             return game_state
         game_state.pickUpCard(card,1)
     elif x == 2: #move three cards from the stock pile to the waste piie
