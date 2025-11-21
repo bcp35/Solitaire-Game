@@ -1,5 +1,6 @@
 from MainMenu import MainMenu
 from Instructions import Instructions
+from SolitaireGUI import GameWindow
 from PyQt6.QtWidgets import QApplication
 
 def OpenInstructions():
@@ -20,7 +21,8 @@ app = QApplication([])
 
 main_window = MainMenu(StartGame, OpenInstructions, Exit)
 instr_window = Instructions(StartGame, OpenMainMenu)
+game_window = GameWindow()
 
-active_window = main_window
+active_window = game_window
 active_window.show()
 app.exec()
