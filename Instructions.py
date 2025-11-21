@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow, QLabel, QPushButton, QVBoxLayout
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QFont, QPixmap
 
 class Instructions(QMainWindow):
     def __init__(self, start_fun, menu_fun):
@@ -23,7 +23,13 @@ class Instructions(QMainWindow):
         textLabels = []
         textLabels.append(QLabel("How to play Solitare:"))
         textLabels.append(QLabel("At each turn, the current state will look like this: "))
-        textLabels.append(QLabel("[Insert Image]"))
+
+        label = QLabel()
+        pixmap = QPixmap("Images/C2.png")
+        pixmap = pixmap.scaledToHeight(80)
+        label.setPixmap(pixmap)
+        textLabels.append(label)
+
         textLabels.append(QLabel("The deck shows the cards that you have left to use, displaying them 3 at a time,only able to use the right-most of the three, and gaining access to the other cards after using them."))
         textLabels.append(QLabel("The aim of the game is to add cards of the same suit from Ace to King in each stack in the correct order."))
         textLabels.append(QLabel("Each lane contains a stack of cards from high to low of alternating colours. Cards can move between lanes, but only if it is one rank below the card above it. Moving a card to another lane reveals the card that was above it. Only Kings can move to empty lanes."))
