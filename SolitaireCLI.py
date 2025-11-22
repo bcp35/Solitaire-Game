@@ -142,6 +142,7 @@ class Deck:
         for i in range(to_get):
             self.waste_pile.append(self.stock_pile.pop())
     def reset(self): #moves all cards from the waste pile back to the stock pile
+        self.waste_pile.reverse()
         self.stock_pile = self.waste_pile + self.stock_pile
         self.waste_pile = []
     def peek(self): #returns top card without removing
