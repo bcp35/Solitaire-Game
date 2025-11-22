@@ -15,9 +15,23 @@ class CardGUI(Card):
     def getDisplayName(self):
         return self.image_location
 
+class InvisibleButton(QPushButton):
+    def __init__(self):
+        super().__init__()
+        self.setFlat(True)
+        self.setStyleSheet( #make it transparent with no border
+            """ QPushButton {
+                background-color: rgba(0,0,0,0);
+                border: none;
+            }/""")
+
 class DeckGUI(Deck):
     def __init__(self, pack):
         super().__init__(pack)
+    def stockPileIsEmpty(self):
+        return len(self.stock_pile) == 0
+    def wastePileIsEmpty(self):
+        return len(self.waste_pile) == 0
     def getDisplay(self):
         return (len(self.stock_pile), [c.getDisplayName() for c in self.getNextThree()])
 
@@ -53,6 +67,28 @@ class GameStateGUI(GameState):
         for i in range(1,8):
             self.lanes[i-1] = LaneGUI(cards[start:start+i],i)
             start += i
+    def buttonPress(self, function):
+        function()
+        self.getDisplay()
+    def stockPilePress(self):
+        if self.deck.stockPileIsEmpty():
+            self.deck.reset()
+        else:
+            self.deck.next()
+    def wastePilePress(self):
+        if not self.deck.wastePileIsEmpty():
+            if self.card_in_hand[0] == [None]:
+                self.pickUpCard(self.deck.peek(),1) #last_loc = 1 means deck
+    def stackPress(self,i):
+        c = self.getCardInHand()[0][0]
+        if c == None: #if not currently holding a card, attempt to pick it up from the stack
+            self.pickUpCard(self.stacks[i].peek(),i+2) #last_loc values for stacks range from 2-5 (0+2 - 3+2)
+            print("PICK UP")
+        else:
+            if len(self.getCardInHand()[0]) == 1: #can only push 1 card onto stack
+                if self.stacks[i].push(c):
+                    self.RemoveCardFromLastLoc()
+        
     def getDisplay(self):
         #set up the deck
         num_cards, first_three = self.deck.getDisplay()
@@ -60,7 +96,6 @@ class GameStateGUI(GameState):
             game_window.setEmpty(0,0)
         else:
             game_window.setHidden(0,0)
-        
         deck_cell = QWidget() #allowing putting multiple cards within a single cell of the grid layout
         deck_cell.setFixedHeight(150)
 
@@ -71,6 +106,8 @@ class GameStateGUI(GameState):
 
         game_window.replaceCard(0,1,deck_cell,1,2)
 
+        game_window.createButton(lambda: self.buttonPress(self.stockPilePress),0,0) #using lambda allows parameter passing
+        game_window.createButton(lambda: self.buttonPress(self.wastePilePress),0,1, col_span=2, width=200) #size of card + 2 overlapping
 
         #set up the stacks
         for i in range(4):
@@ -80,7 +117,13 @@ class GameStateGUI(GameState):
                 game_window.setEmpty(0,i+3)
             else:
                 name = suit + ranks[rank_int-1]
-                game_window.replaceCard(0,i+3,game_window.createImage("Images/" + suit + ranks[rank_int] + ".png"))
+                game_window.replaceCard(0,i+3,game_window.createImage("Images/" + name + ".png"))
+
+        game_window.createButton(lambda: self.buttonPress(lambda: self.stackPress(0)),0,3)
+        game_window.createButton(lambda: self.buttonPress(lambda: self.stackPress(1)),0,4)
+        game_window.createButton(lambda: self.buttonPress(lambda: self.stackPress(2)),0,5)
+        game_window.createButton(lambda: self.buttonPress(lambda: self.stackPress(3)),0,6)
+
 
         #set up the lanes
         for i in range(7):
@@ -88,6 +131,7 @@ class GameStateGUI(GameState):
             lane_cell = QWidget()
             cards = lane.getDisplay()
             lane_cell.setFixedHeight(600)
+            lane_cell.setFixedWidth(106)
 
             for j in range(len(cards)):
                 card = cards[j]
@@ -96,8 +140,7 @@ class GameStateGUI(GameState):
                 widget.move(0,j*25)
             
             game_window.replaceCard(2,i,lane_cell)
-
-
+ 
 ranks = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"] #conversion from integer rank into string
 
 class GameWindow(QMainWindow):
@@ -134,9 +177,11 @@ class GameWindow(QMainWindow):
             
     
     def replaceCard(self,row_num,col_num,new,row_span=1,col_span=1): #making row span and col span optional, set to 1 initially but can be changed, allowing elements that span more than one cell in the grid
-        item = self.layout.itemAtPosition(row_num,col_num)
-        if item: #check that item exists
-            item.widget().setParent(None)
+        for i in range(row_span):
+            for j in range(col_span): #for loops are necessary for items that take up multiple cells in the grid
+                item = self.layout.itemAtPosition(row_num+i,col_num+j)
+                if item: #check that item exists
+                    item.widget().setParent(None)
         self.layout.addWidget(new,row_num,col_num, row_span, col_span)
     
     def addNextTo(self,row_num,col_num,new):
@@ -157,11 +202,17 @@ class GameWindow(QMainWindow):
         label.setPixmap(pixmap)
         return label
 
-def GameSetup():
-    pack = Shuffle(GeneratePack())
-    game_state = GameStateGUI(pack.tolist(),datetime.now(), game_window)
+    def createButton(self,fun,row_num,col_num,row_span=1,col_span=1,width=150,height=106): #by default should be size of a card
+        button = InvisibleButton()
+        button.setFixedSize(width,height)
+        button.clicked.connect(fun) #using lambda allows parameter passing
+        self.placeButton(button,row_num,col_num,row_span,col_span)
 
-def GeneratePack():
+    def placeButton(self,button,row_num,col_num,row_span=1,col_span=1): 
+        self.layout.addWidget(button,row_num,col_num,row_span,col_span)
+    
+
+def GeneratePack(): #cannot use SolitaireCLI's Generate Method as that uses Card not CardGUI
     pack = np.empty(52, dtype = object)
     for i in range(4):
         for j in range(13):
@@ -170,10 +221,11 @@ def GeneratePack():
 
 app = QApplication([])
 game_window = GameWindow()
+pack = Shuffle(GeneratePack().tolist())
+game_state = GameStateGUI(pack, datetime.now(), game_window)
 
 active_window = game_window
 active_window.show()
 
-GameSetup()
 
 app.exec()
