@@ -19,11 +19,7 @@ class InvisibleButton(QPushButton):
     def __init__(self):
         super().__init__()
         self.setFlat(True)
-        self.setStyleSheet( #make it transparent with no border
-            """ QPushButton {
-                background-color: rgba(0,0,0,0);
-                border: none;
-            }/""")
+        self.setStyleSheet("background-color: rgba(0,0,0,0);border: none;") #make it transparent with no border
 
 class DeckGUI(Deck):
     def __init__(self, pack):
@@ -65,11 +61,11 @@ class GameStateGUI(GameState):
     def __init__(self, pack, start_time, game_window):
         super().__init__(pack,start_time)
         self.deck = DeckGUI(pack[28:]) #override: class must be DeckGUI
-        self.stacks = [StackGUI(i) for i in range(4)] #overwrite: class must be StackGUI
+        self.stacks = [StackGUI(i) for i in range(4)] #override: class must be StackGUI
         self.check_give_up = False #whether the user has just pressed the give up button
         self.game_window = game_window
         self.getDisplay() 
-    def distributeLanes(self,cards): #overwrite: class must be LaneGUI
+    def distributeLanes(self,cards): #override: class must be LaneGUI
         start = 0
         for i in range(1,8):
             self.lanes[i-1] = LaneGUI(cards[start:start+i],i)
