@@ -24,7 +24,8 @@ class GameManager():
         self.active_window.show()
 
     def StartGame(self):
-        self.active_window.hide()
+        self.active_window.close()
+        self.game = GameWindow(self.OpenMainMenu) #reinitialising to ensure game state is not saved and new game is started next time
         self.active_window = self.game
         self.active_window.show()
 
