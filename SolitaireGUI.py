@@ -158,8 +158,1005 @@ class GameStateGUI(GameState):
                 widget = self.game_window.createImage(card)
                 widget.setParent(lane_cell)
                 widget.move(0,j*25)
+
+            lane_cell.setStyleSheet("background-color: rgb(30,30,30)") #adding a background colour to the lanes, the same colour as the window background, completely writes over the older cards
             
-            game_window.replaceCard(2,i,lane_cell)
+            self.game_window.replaceCard(2,i,lane_cell)
+
+        #Attempted to use iteration, however when inserting variables into the function for the button press, 
+        #the value of the variable when the button was pressed mattered, not when it was created, causing many problems
+        #Therefore it has to be done manually, a lot of repeated/redundant code, but seemingly unavoidable
+
+        #Lane1
+        lane = self.lanes[0]
+        button_cell = QWidget()
+        button_cell.setFixedSize(106,600)
+        
+        cards = lane.getDisplay()
+
+        if lane.isEmpty():
+            button = InvisibleButton()
+            button.setFixedSize(106,150)
+            button.setParent(button_cell)
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,1))) 
+        
+        num_shown_cards = lane.getNumShownCards()
+        num_hidden_cards = len(cards) - num_shown_cards
+
+        if num_shown_cards >= 1:
+            button = InvisibleButton()
+            if num_shown_cards == 1:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(0+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,1))) 
+        if num_shown_cards >= 2:
+            button = InvisibleButton()
+            if num_shown_cards == 2:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(1+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,2))) 
+        if num_shown_cards >= 3:
+            button = InvisibleButton()
+            if num_shown_cards == 3:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(2+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,3))) 
+        if num_shown_cards >= 4:
+            button = InvisibleButton()
+            if num_shown_cards == 4:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(3+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,4))) 
+        if num_shown_cards >= 5:
+            button = InvisibleButton()
+            if num_shown_cards == 5:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(4+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,5))) 
+        if num_shown_cards >= 6:
+            button = InvisibleButton()
+            if num_shown_cards == 6:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(5+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,6))) 
+        if num_shown_cards >= 7:
+            button = InvisibleButton()
+            if num_shown_cards == 7:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(6+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,7))) 
+        if num_shown_cards >= 8:
+            button = InvisibleButton()
+            if num_shown_cards == 8:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(7+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,8))) 
+        if num_shown_cards >= 9:
+            button = InvisibleButton()
+            if num_shown_cards == 9:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(8+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,9))) 
+        if num_shown_cards >= 10:
+            button = InvisibleButton()
+            if num_shown_cards == 10:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(9+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,10))) 
+        if num_shown_cards >= 11:
+            button = InvisibleButton()
+            if num_shown_cards == 11:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(10+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,11))) 
+        if num_shown_cards >= 12:
+            button = InvisibleButton()
+            if num_shown_cards == 12:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(11+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,12)))
+        if num_shown_cards >= 13:
+            button = InvisibleButton()
+            if num_shown_cards == 13:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(12+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(1,13)))  
+        self.game_window.placeButton(button_cell,2,0)
+
+
+        #Lane2
+        lane = self.lanes[1]
+        button_cell = QWidget()
+        button_cell.setFixedSize(106,600)
+        
+        cards = lane.getDisplay()
+
+        if lane.isEmpty():
+            button = InvisibleButton()
+            button.setFixedSize(106,150)
+            button.setParent(button_cell)
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,1))) 
+        
+        num_shown_cards = lane.getNumShownCards()
+        num_hidden_cards = len(cards) - num_shown_cards
+
+        if num_shown_cards >= 1:
+            button = InvisibleButton()
+            if num_shown_cards == 1:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(0+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,1))) 
+        if num_shown_cards >= 2:
+            button = InvisibleButton()
+            if num_shown_cards == 2:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(1+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,2))) 
+        if num_shown_cards >= 3:
+            button = InvisibleButton()
+            if num_shown_cards == 3:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(2+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,3))) 
+        if num_shown_cards >= 4:
+            button = InvisibleButton()
+            if num_shown_cards == 4:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(3+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,4))) 
+        if num_shown_cards >= 5:
+            button = InvisibleButton()
+            if num_shown_cards == 5:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(4+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,5))) 
+        if num_shown_cards >= 6:
+            button = InvisibleButton()
+            if num_shown_cards == 6:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(5+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,6))) 
+        if num_shown_cards >= 7:
+            button = InvisibleButton()
+            if num_shown_cards == 7:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(6+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,7))) 
+        if num_shown_cards >= 8:
+            button = InvisibleButton()
+            if num_shown_cards == 8:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(7+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,8))) 
+        if num_shown_cards >= 9:
+            button = InvisibleButton()
+            if num_shown_cards == 9:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(8+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,9))) 
+        if num_shown_cards >= 10:
+            button = InvisibleButton()
+            if num_shown_cards == 10:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(9+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,10))) 
+        if num_shown_cards >= 11:
+            button = InvisibleButton()
+            if num_shown_cards == 11:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(10+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,11))) 
+        if num_shown_cards >= 12:
+            button = InvisibleButton()
+            if num_shown_cards == 12:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(11+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,12)))
+        if num_shown_cards >= 13:
+            button = InvisibleButton()
+            if num_shown_cards == 13:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(12+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(2,13)))  
+        self.game_window.placeButton(button_cell,2,1)
+
+
+        #Lane3
+        lane = self.lanes[2]
+        button_cell = QWidget()
+        button_cell.setFixedSize(106,600)
+        
+        cards = lane.getDisplay()
+
+        if lane.isEmpty():
+            button = InvisibleButton()
+            button.setFixedSize(106,150)
+            button.setParent(button_cell)
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,1))) 
+        
+        num_shown_cards = lane.getNumShownCards()
+        num_hidden_cards = len(cards) - num_shown_cards
+
+        if num_shown_cards >= 1:
+            button = InvisibleButton()
+            if num_shown_cards == 1:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(0+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,1))) 
+        if num_shown_cards >= 2:
+            button = InvisibleButton()
+            if num_shown_cards == 2:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(1+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,2))) 
+        if num_shown_cards >= 3:
+            button = InvisibleButton()
+            if num_shown_cards == 3:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(2+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,3))) 
+        if num_shown_cards >= 4:
+            button = InvisibleButton()
+            if num_shown_cards == 4:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(3+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,4))) 
+        if num_shown_cards >= 5:
+            button = InvisibleButton()
+            if num_shown_cards == 5:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(4+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,5))) 
+        if num_shown_cards >= 6:
+            button = InvisibleButton()
+            if num_shown_cards == 6:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(5+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,6))) 
+        if num_shown_cards >= 7:
+            button = InvisibleButton()
+            if num_shown_cards == 7:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(6+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,7))) 
+        if num_shown_cards >= 8:
+            button = InvisibleButton()
+            if num_shown_cards == 8:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(7+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,8))) 
+        if num_shown_cards >= 9:
+            button = InvisibleButton()
+            if num_shown_cards == 9:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(8+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,9))) 
+        if num_shown_cards >= 10:
+            button = InvisibleButton()
+            if num_shown_cards == 10:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(9+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,10))) 
+        if num_shown_cards >= 11:
+            button = InvisibleButton()
+            if num_shown_cards == 11:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(10+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,11))) 
+        if num_shown_cards >= 12:
+            button = InvisibleButton()
+            if num_shown_cards == 12:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(11+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,12)))
+        if num_shown_cards >= 13:
+            button = InvisibleButton()
+            if num_shown_cards == 13:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(12+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(3,13)))  
+        self.game_window.placeButton(button_cell,2,2)
+
+
+        #Lane4
+        lane = self.lanes[3]
+        button_cell = QWidget()
+        button_cell.setFixedSize(106,600)
+        
+        cards = lane.getDisplay()
+
+        if lane.isEmpty():
+            button = InvisibleButton()
+            button.setFixedSize(106,150)
+            button.setParent(button_cell)
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,1))) 
+        
+        num_shown_cards = lane.getNumShownCards()
+        num_hidden_cards = len(cards) - num_shown_cards
+
+        if num_shown_cards >= 1:
+            button = InvisibleButton()
+            if num_shown_cards == 1:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(0+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,1))) 
+        if num_shown_cards >= 2:
+            button = InvisibleButton()
+            if num_shown_cards == 2:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(1+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,2))) 
+        if num_shown_cards >= 3:
+            button = InvisibleButton()
+            if num_shown_cards == 3:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(2+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,3))) 
+        if num_shown_cards >= 4:
+            button = InvisibleButton()
+            if num_shown_cards == 4:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(3+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,4))) 
+        if num_shown_cards >= 5:
+            button = InvisibleButton()
+            if num_shown_cards == 5:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(4+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,5))) 
+        if num_shown_cards >= 6:
+            button = InvisibleButton()
+            if num_shown_cards == 6:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(5+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,6))) 
+        if num_shown_cards >= 7:
+            button = InvisibleButton()
+            if num_shown_cards == 7:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(6+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,7))) 
+        if num_shown_cards >= 8:
+            button = InvisibleButton()
+            if num_shown_cards == 8:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(7+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,8))) 
+        if num_shown_cards >= 9:
+            button = InvisibleButton()
+            if num_shown_cards == 9:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(8+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,9))) 
+        if num_shown_cards >= 10:
+            button = InvisibleButton()
+            if num_shown_cards == 10:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(9+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,10))) 
+        if num_shown_cards >= 11:
+            button = InvisibleButton()
+            if num_shown_cards == 11:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(10+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,11))) 
+        if num_shown_cards >= 12:
+            button = InvisibleButton()
+            if num_shown_cards == 12:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(11+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,12)))
+        if num_shown_cards >= 13:
+            button = InvisibleButton()
+            if num_shown_cards == 13:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(12+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(4,13)))  
+        self.game_window.placeButton(button_cell,2,3)
+
+
+        #Lane5
+        lane = self.lanes[4]
+        button_cell = QWidget()
+        button_cell.setFixedSize(106,600)
+        
+        cards = lane.getDisplay()
+
+        if lane.isEmpty():
+            button = InvisibleButton()
+            button.setFixedSize(106,150)
+            button.setParent(button_cell)
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,1))) 
+        
+        num_shown_cards = lane.getNumShownCards()
+        num_hidden_cards = len(cards) - num_shown_cards
+
+        if num_shown_cards >= 1:
+            button = InvisibleButton()
+            if num_shown_cards == 1:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(0+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,1))) 
+        if num_shown_cards >= 2:
+            button = InvisibleButton()
+            if num_shown_cards == 2:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(1+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,2))) 
+        if num_shown_cards >= 3:
+            button = InvisibleButton()
+            if num_shown_cards == 3:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(2+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,3))) 
+        if num_shown_cards >= 4:
+            button = InvisibleButton()
+            if num_shown_cards == 4:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(3+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,4))) 
+        if num_shown_cards >= 5:
+            button = InvisibleButton()
+            if num_shown_cards == 5:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(4+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,5))) 
+        if num_shown_cards >= 6:
+            button = InvisibleButton()
+            if num_shown_cards == 6:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(5+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,6))) 
+        if num_shown_cards >= 7:
+            button = InvisibleButton()
+            if num_shown_cards == 7:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(6+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,7))) 
+        if num_shown_cards >= 8:
+            button = InvisibleButton()
+            if num_shown_cards == 8:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(7+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,8))) 
+        if num_shown_cards >= 9:
+            button = InvisibleButton()
+            if num_shown_cards == 9:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(8+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,9))) 
+        if num_shown_cards >= 10:
+            button = InvisibleButton()
+            if num_shown_cards == 10:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(9+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,10))) 
+        if num_shown_cards >= 11:
+            button = InvisibleButton()
+            if num_shown_cards == 11:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(10+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,11))) 
+        if num_shown_cards >= 12:
+            button = InvisibleButton()
+            if num_shown_cards == 12:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(11+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,12)))
+        if num_shown_cards >= 13:
+            button = InvisibleButton()
+            if num_shown_cards == 13:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(12+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(5,13)))  
+        self.game_window.placeButton(button_cell,2,4)
+
+
+        #Lane 6
+        lane = self.lanes[5]
+        button_cell = QWidget()
+        button_cell.setFixedSize(106,600)
+        
+        cards = lane.getDisplay()
+
+        if lane.isEmpty():
+            button = InvisibleButton()
+            button.setFixedSize(106,150)
+            button.setParent(button_cell)
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,1))) 
+        
+        num_shown_cards = lane.getNumShownCards()
+        num_hidden_cards = len(cards) - num_shown_cards
+
+        if num_shown_cards >= 1:
+            button = InvisibleButton()
+            if num_shown_cards == 1:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(0+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,1))) 
+        if num_shown_cards >= 2:
+            button = InvisibleButton()
+            if num_shown_cards == 2:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(1+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,2))) 
+        if num_shown_cards >= 3:
+            button = InvisibleButton()
+            if num_shown_cards == 3:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(2+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,3))) 
+        if num_shown_cards >= 4:
+            button = InvisibleButton()
+            if num_shown_cards == 4:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(3+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,4))) 
+        if num_shown_cards >= 5:
+            button = InvisibleButton()
+            if num_shown_cards == 5:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(4+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,5))) 
+        if num_shown_cards >= 6:
+            button = InvisibleButton()
+            if num_shown_cards == 6:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(5+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,6))) 
+        if num_shown_cards >= 7:
+            button = InvisibleButton()
+            if num_shown_cards == 7:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(6+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,7))) 
+        if num_shown_cards >= 8:
+            button = InvisibleButton()
+            if num_shown_cards == 8:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(7+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,8))) 
+        if num_shown_cards >= 9:
+            button = InvisibleButton()
+            if num_shown_cards == 9:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(8+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,9))) 
+        if num_shown_cards >= 10:
+            button = InvisibleButton()
+            if num_shown_cards == 10:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(9+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,10))) 
+        if num_shown_cards >= 11:
+            button = InvisibleButton()
+            if num_shown_cards == 11:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(10+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,11))) 
+        if num_shown_cards >= 12:
+            button = InvisibleButton()
+            if num_shown_cards == 12:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(11+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,12)))
+        if num_shown_cards >= 13:
+            button = InvisibleButton()
+            if num_shown_cards == 13:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(12+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(6,13)))  
+        self.game_window.placeButton(button_cell,2,5)
+
+
+        #Lane7
+        lane = self.lanes[6]
+        button_cell = QWidget()
+        button_cell.setFixedSize(106,600)
+        
+        cards = lane.getDisplay()
+
+        if lane.isEmpty():
+            button = InvisibleButton()
+            button.setFixedSize(106,150)
+            button.setParent(button_cell)
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,1))) 
+        
+        num_shown_cards = lane.getNumShownCards()
+        num_hidden_cards = len(cards) - num_shown_cards
+
+        if num_shown_cards >= 1:
+            button = InvisibleButton()
+            if num_shown_cards == 1:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(0+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,1))) 
+        if num_shown_cards >= 2:
+            button = InvisibleButton()
+            if num_shown_cards == 2:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(1+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,2))) 
+        if num_shown_cards >= 3:
+            button = InvisibleButton()
+            if num_shown_cards == 3:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(2+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,3))) 
+        if num_shown_cards >= 4:
+            button = InvisibleButton()
+            if num_shown_cards == 4:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(3+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,4))) 
+        if num_shown_cards >= 5:
+            button = InvisibleButton()
+            if num_shown_cards == 5:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(4+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,5))) 
+        if num_shown_cards >= 6:
+            button = InvisibleButton()
+            if num_shown_cards == 6:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(5+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,6))) 
+        if num_shown_cards >= 7:
+            button = InvisibleButton()
+            if num_shown_cards == 7:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(6+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,7))) 
+        if num_shown_cards >= 8:
+            button = InvisibleButton()
+            if num_shown_cards == 8:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(7+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,8))) 
+        if num_shown_cards >= 9:
+            button = InvisibleButton()
+            if num_shown_cards == 9:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(8+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,9))) 
+        if num_shown_cards >= 10:
+            button = InvisibleButton()
+            if num_shown_cards == 10:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(9+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,10))) 
+        if num_shown_cards >= 11:
+            button = InvisibleButton()
+            if num_shown_cards == 11:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(10+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,11))) 
+        if num_shown_cards >= 12:
+            button = InvisibleButton()
+            if num_shown_cards == 12:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(11+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,12)))
+        if num_shown_cards >= 13:
+            button = InvisibleButton()
+            if num_shown_cards == 13:
+                button.setFixedSize(106,150)
+            else:
+                button.setFixedSize(106,25)
+            button.setParent(button_cell)
+            button.move(0,25*(12+num_hidden_cards))
+            button.clicked.connect(lambda: self.buttonPress(lambda: self.lanePress(7,13)))  
+        self.game_window.placeButton(button_cell,2,6)
+
+        extra_buttons_cell = QWidget()
+        extra_buttons_cell.setFixedSize(100,245)
+
+        #return button
+        return_button = QPushButton()
+        return_button.setFixedSize(100,100)
+        return_button.setText("Return")
+        if self.card_in_hand[0] != [None]:
+            return_button.setStyleSheet("background-color: blue;")
+            return_button.clicked.connect(lambda: self.buttonPress(self.ReturnCard))
+        else:
+            return_button.setStyleSheet("background-color: grey")
+        return_button.setParent(extra_buttons_cell)
+        return_button.move(0,145)
+
+        #give up button
+        giveup_button = QPushButton()
+        giveup_button.setFixedSize(100,100)
+        giveup_button.setText("Give Up")
+        if self.checkIfGivingUp() == True:
+            giveup_button.setStyleSheet("background-color: grey;")
+        else:
+            giveup_button.setStyleSheet("background-color: red;")
+        giveup_button.clicked.connect(lambda: self.buttonPress(self.CheckGiveUp))
+        giveup_button.setParent(extra_buttons_cell)
+        giveup_button.move(0,35)
+
+        #confirm give up button
+        if self.checkIfGivingUp():
+            confirm_giveup_button = QPushButton()
+            confirm_giveup_button.setFixedSize(100,25)
+            confirm_giveup_button.setText("Confirm Give Up")
+            confirm_giveup_button.setStyleSheet("background-color: red;")
+            confirm_giveup_button.clicked.connect(lambda: self.buttonPress(self.game_window.getMenuFun()))
+            confirm_giveup_button.setParent(extra_buttons_cell)
+
+        self.game_window.replaceCard(2,8,extra_buttons_cell)
+
+        
  
 ranks = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"] #conversion from integer rank into string
 
@@ -241,14 +1238,3 @@ def GeneratePack(): #cannot use SolitaireCLI's Generate Method as that uses Card
         for j in range(13):
             pack[13*i + j] = CardGUI(i, j)
     return pack
-
-app = QApplication([])
-game_window = GameWindow()
-pack = Shuffle(GeneratePack().tolist())
-game_state = GameStateGUI(pack, datetime.now(), game_window)
-
-active_window = game_window
-active_window.show()
-
-
-app.exec()
