@@ -3,27 +3,35 @@ from Instructions import Instructions
 from SolitaireGUI import GameWindow
 from PyQt6.QtWidgets import QApplication
 
-def OpenInstructions():
-    active_window.hide()
-    instr_window.show()
+class GameManager():
+    def __init__(self):
+        self.main = MainMenu(self.StartGame, self.OpenInstructions, self.Exit)
+        self.instr = Instructions(self.StartGame, self.OpenMainMenu)
+        self.game = GameWindow(self.OpenMainMenu)
+        self.active_window = self.main
+        self.active_window.show()
+    def getActive(self):
+        return self.active_window
 
-def OpenMainMenu():
-    active_window.hide()
-    main_window.show()
+    def OpenInstructions(self):
+        self.active_window.hide()
+        self.active_window = self.instr
+        self.active_window.show()
 
-def StartGame():
-    active_window.hide()
-    game_window.show()
+    def OpenMainMenu(self):
+        self.active_window.hide()
+        self.active_window = self.main
+        self.active_window.show()
 
-def Exit():
-    QApplication.quit()
+    def StartGame(self):
+        self.active_window.hide()
+        self.active_window = self.game
+        self.active_window.show()
+
+    def Exit(self):
+        QApplication.quit()
+
 
 app = QApplication([])
-
-main_window = MainMenu(StartGame, OpenInstructions, Exit)
-instr_window = Instructions(StartGame, OpenMainMenu)
-game_window = GameWindow(OpenMainMenu)
-
-active_window = main_window
-active_window.show()
+manager = GameManager()
 app.exec()
