@@ -21,28 +21,27 @@ class Instructions(QMainWindow):
         layout.addWidget(titleLabel)
 
         textLabels = []
-        textLabels.append(QLabel("How to play Solitare:"))
         textLabels.append(QLabel("At each turn, the current state will look like this: "))
 
         label = QLabel()
-        pixmap = QPixmap("Images/C2.png")
-        pixmap = pixmap.scaledToHeight(80)
+        pixmap = QPixmap("Images/GameStateExample.png")
+        pixmap = pixmap.scaledToHeight(300)
         label.setPixmap(pixmap)
         textLabels.append(label)
 
-        textLabels.append(QLabel("The deck shows the cards that you have left to use, displaying them 3 at a time,only able to use the right-most of the three, and gaining access to the other cards after using them."))
         textLabels.append(QLabel("The aim of the game is to add cards of the same suit from Ace to King in each stack in the correct order."))
-        textLabels.append(QLabel("Each lane contains a stack of cards from high to low of alternating colours. Cards can move between lanes, but only if it is one rank below the card above it. Moving a card to another lane reveals the card that was above it. Only Kings can move to empty lanes."))
-        textLabels.append(QLabel("For each go you have the option to access the next card in the deck, or the bottom card from each lane, and move it to the corresponding stack for that rank or another lane, if that is a legal move."))
+        textLabels.append(QLabel("Click on a card to pick it up, or the highest card in a lane to pick up many."))
+        textLabels.append(QLabel("Click on a stack or lane to put the card down there, or the return button to put it back."))
+
 
         startButton = QPushButton("Start Game")
-        startButton.setFixedSize(350,60)
-        startButton.setFont(QFont("Arial",25))
+        startButton.setFixedSize(200,40)
+        startButton.setFont(QFont("Arial",15))
         startButton.clicked.connect(self.start_fun)
 
         menuButton = QPushButton("Main Menu")
-        menuButton.setFixedSize(350,60)
-        menuButton.setFont(QFont("Arial",25))
+        menuButton.setFixedSize(200,40)
+        menuButton.setFont(QFont("Arial",15))
         menuButton.clicked.connect(self.menu_fun)
 
         for label in textLabels:
