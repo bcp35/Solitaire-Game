@@ -64,6 +64,8 @@ class Lane:
     def isEmpty(self):
         return len(self.shown_cards) == 0
     def push(self, cards): #puts this card on the lane (if legal)
+        if len(cards) == 0:
+            return False
         first = cards[0]
         if self.top_card == None: #lane is currently empty
             if first.getRank() == 13: #the top of the new cards is a king
