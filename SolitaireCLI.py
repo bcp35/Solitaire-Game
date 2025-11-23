@@ -432,8 +432,8 @@ def PlayGame(game_state):
 
 def EndGame(game_state):
     print("You won, congratulations!")
-    time = game_state.getTimeTaken()
-    print("Time taken: {time.hour} hours, {time.minute} minutes, and {time.second} seconds")
+    time_taken = game_state.getTimeTaken()
+    print(f"Time taken: {self.time_taken}")
     MainMenu()
 
 

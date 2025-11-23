@@ -2,6 +2,7 @@ from datetime import datetime
 import numpy as np
 
 from SolitaireCLI import Card, Deck, Stack, Lane, GameState, Shuffle
+from GameWon import GameWon
 
 from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow, QLabel, QPushButton, QGridLayout
 from PyQt6.QtGui import QFont, QPixmap
@@ -110,6 +111,11 @@ class GameStateGUI(GameState):
     def checkIfGivingUp(self):
         return self.check_give_up
     def getDisplay(self):
+        #check if the game has been won yet
+        if self.gameWon():
+            self.game_window.EndGame(datetime.now()-self.start_time)
+            return
+
         #set up the deck
         num_cards, first_three = self.deck.getDisplay()
         if num_cards == 0:
@@ -1161,9 +1167,10 @@ class GameStateGUI(GameState):
 ranks = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"] #conversion from integer rank into string
 
 class GameWindow(QMainWindow):
-    def __init__(self, menu_fun):
+    def __init__(self, menu_fun,start_fun):
         super().__init__()
         self.menu_fun = menu_fun #function to call when the game ends
+        self.start_fun = start_fun #function to call when user chooses to play again
 
         self.setWindowTitle("Solitaire")
         self.setGeometry(50,50,1000,600)
@@ -1197,6 +1204,12 @@ class GameWindow(QMainWindow):
             
     def getMenuFun(self):
         return self.menu_fun
+
+    def EndGame(self,time):
+        self.game_won_screen = GameWon(time,self.menu_fun,self.start_fun) #produces a screen that tells the user they've won
+        self.hide()
+        self.game_won_screen.show()
+
     def replaceCard(self,row_num,col_num,new,row_span=1,col_span=1): #making row span and col span optional, set to 1 initially but can be changed, allowing elements that span more than one cell in the grid
         for i in range(row_span):
             for j in range(col_span): #for loops are necessary for items that take up multiple cells in the grid

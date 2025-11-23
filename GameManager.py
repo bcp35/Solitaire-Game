@@ -7,7 +7,7 @@ class GameManager():
     def __init__(self):
         self.main = MainMenu(self.StartGame, self.OpenInstructions, self.Exit)
         self.instr = Instructions(self.StartGame, self.OpenMainMenu)
-        self.game = GameWindow(self.OpenMainMenu)
+        self.game = GameWindow(self.OpenMainMenu, self.StartGame)
         self.active_window = self.main
         self.active_window.show()
     def getActive(self):
@@ -25,7 +25,7 @@ class GameManager():
 
     def StartGame(self):
         self.active_window.close()
-        self.game = GameWindow(self.OpenMainMenu) #reinitialising to ensure game state is not saved and new game is started next time
+        self.game = GameWindow(self.OpenMainMenu, self.StartGame) #reinitialising to ensure game state is not saved and new game is started next time
         self.active_window = self.game
         self.active_window.show()
 
