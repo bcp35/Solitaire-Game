@@ -3,8 +3,7 @@ import numpy as np
 
 from SolitaireCLI import Card, Deck, Stack, Lane, GameState, Shuffle
 
-from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow, QLabel, QPushButton, QGridLayout, QSpacerItem
-from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow, QLabel, QPushButton, QGridLayout
 from PyQt6.QtGui import QFont, QPixmap
 
 class CardGUI(Card):
@@ -159,6 +158,8 @@ class GameStateGUI(GameState):
                 widget = self.game_window.createImage(card)
                 widget.setParent(lane_cell)
                 widget.move(0,j*25)
+
+            lane_cell.setStyleSheet("background-color: rgb(30,30,30)") #adding a background colour to the lanes, the same colour as the window background, completely writes over the older cards
             
             self.game_window.replaceCard(2,i,lane_cell)
 
