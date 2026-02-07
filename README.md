@@ -1,4 +1,4 @@
-# HawkEye-Coding-Task---Card-Game
+# Solitaire Game
 
 This folder contains the code for both a Command Line Interface version and a Graphical User Interface Version of the card game Solitaire.
 
